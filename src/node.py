@@ -38,8 +38,6 @@ class Node:
 	    self.sub_gps_navsat = rospy.Subscriber('gps_navsat', NavSatFix, self.gps_navsat_callback)
 
 	    self.sub_odom = rospy.Subscriber('odom_inertial', Odometry, self.odom_callback)
-
-        self.vehicle = VehicleConnector()
         
         self.gps_msg = GPSFix()
 
@@ -64,10 +62,6 @@ class Node:
    
             self.gps_msg.dip = self.heading
 
-            self.gps_msg.hdop = self.vehicle.get_eph()
-
-            self.gps_msg.vdop = self.vehicle.get_epv()
-
             # publishing            
             self.pub_gps_fix.publish(self.gps_msg)
 
@@ -83,7 +77,7 @@ class Node:
 
     def shutdown(self):
 
-        self.vehicle.stop()
+        pass
     
         
 if __name__ == "__main__":
