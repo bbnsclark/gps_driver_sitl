@@ -3,15 +3,14 @@
 import numpy as np
 from datetime import datetime
 from math import pi, cos, sin
-#from __future__ import print_function
-from dronekit import connect, VehicleMode
-from vehicle_connector import VehicleConnector
 import time
 
 import tf
 import rospy
 from gps_driver.msg import GPSQual
+from sensor_msgs.msg import NavSatFix
 from std_msgs.msg import Float64
+from nav_msgs.msg import Odometry
 from gps_common.msg import GPSFix
 from geometry_msgs.msg import Quaternion, Twist
 
@@ -26,18 +25,18 @@ class Node:
         rospy.loginfo("Starting node...")
 
         self.rate = 1.0
-
-	    self.heading = 0.0
-
-	    self.latitude = 0.0
-
-	    self.longitude = 0.0
-
+        
+        self.heading = 0.0
+        
+        self.latitude = 0.0
+        
+        self.longitude = 0.0
+        
         self.pub_gps_fix = rospy.Publisher('gps_fix', GPSFix, queue_size = 1)
-
-	    self.sub_gps_navsat = rospy.Subscriber('gps_navsat', NavSatFix, self.gps_navsat_callback)
-
-	    self.sub_odom = rospy.Subscriber('odom_inertial', Odometry, self.odom_callback)
+        
+        self.sub_gps_navsat = rospy.Subscriber('gps_navsat', NavSatFix, self.gps_navsat_callback)
+        
+        self.sub_odom = rospy.Subscriber('odom_inertial', Odometry, self.odom_callback)
         
         self.gps_msg = GPSFix()
 
@@ -67,13 +66,20 @@ class Node:
 
             r_time.sleep()
 
+
     def odom_callback(self, msg):
 
         (r, p, y) = tf.transformations.euler_from_quaternion([msg.pose.pose.orientation.x, msg.pose.pose.orientation.y, msg.pose.pose.orientation.z, msg.pose.pose.orientation.w])
 
         self.theta = y
 
-    def 
+
+    def gps_navsat_callback(self, msg):
+
+        self.latitude = msg.latitude
+
+        self.longitude = msg.longitude
+
 
     def shutdown(self):
 
