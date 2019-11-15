@@ -71,7 +71,7 @@ class Node:
 
         (r, p, y) = tf.transformations.euler_from_quaternion([msg.pose.pose.orientation.x, msg.pose.pose.orientation.y, msg.pose.pose.orientation.z, msg.pose.pose.orientation.w])
 
-        self.heading = ((2.0 * pi - y) * 180 / pi - 30.0) % 360
+        self.heading = (((2.0 * pi - y) * 180 / pi) + 67) % 360 
 
 
     def gps_navsat_callback(self, msg):
