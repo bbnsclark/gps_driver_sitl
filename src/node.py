@@ -7,7 +7,7 @@ import time
 
 import tf
 import rospy
-from gps_driver.msg import GPSQual
+#from gps_driver.msg import GPSQual
 from sensor_msgs.msg import NavSatFix
 from std_msgs.msg import Float64
 from nav_msgs.msg import Odometry
