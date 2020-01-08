@@ -33,12 +33,16 @@ class Node:
         self.longitude = 0.0
         
         self.pub_gps_fix = rospy.Publisher('gps_fix', GPSFix, queue_size = 1)
+
+        self.pub_gps_initial_fix = rospy.Publisher('gps_initial_fix', GPSFix, queue_size = 1, latch = True)
         
         self.sub_gps_navsat = rospy.Subscriber('gps_navsat', NavSatFix, self.gps_navsat_callback)
         
         self.sub_odom = rospy.Subscriber('odom_wheel', Odometry, self.odom_callback)
         
         self.gps_msg = GPSFix()
+
+        self.count = 0
 
 
     def run(self):
@@ -63,6 +67,12 @@ class Node:
 
             # publishing            
             self.pub_gps_fix.publish(self.gps_msg)
+
+            if self.count == 0:
+
+                self.pub_gps_initial_fix.publish(self.gps_msg) 
+
+                self.count = 1 
 
             r_time.sleep()
 
