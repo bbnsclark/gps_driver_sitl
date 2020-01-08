@@ -1,9 +1,9 @@
 #!/usr/bin/python
 
+import time
 import numpy as np
 from datetime import datetime
 from math import pi, cos, sin
-import time
 
 import tf
 import rospy
