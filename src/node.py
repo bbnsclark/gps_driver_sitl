@@ -24,9 +24,6 @@ class Node:
 
         rospy.loginfo("Starting node...")
 
-        self.initial_heading_degrees = rospy.get_param('~initial_heading_degrees')
-        print('initial_heading_degrees = ' + str(self.initial_heading_degrees))
-
         self.rate = 1.0
         
         self.heading = 0.0
@@ -45,6 +42,8 @@ class Node:
         
         self.gps_msg = GPSFix()
 
+        self.initial_heading_degrees = rospy.get_param('~initial_heading_degrees')
+
         self.count = 0
 
 
@@ -57,7 +56,6 @@ class Node:
         while not rospy.is_shutdown():
 
             # building the GPS Fix message
-
             self.gps_msg.header.stamp = rospy.Time.now()
 
             self.gps_msg.header.frame_id = 'base_link'   
