@@ -7,7 +7,7 @@ import time
 
 import tf
 import rospy
-from gps_driver.msg import GPSQual
+#from gps_driver.msg import GPSQual
 from sensor_msgs.msg import NavSatFix
 from std_msgs.msg import Float64
 from nav_msgs.msg import Odometry
@@ -23,6 +23,9 @@ class Node:
         rospy.on_shutdown(self.shutdown)
 
         rospy.loginfo("Starting node...")
+
+        self.initial_heading_degrees = rospy.get_param('~initial_heading_degrees')
+        print('initial_heading_degrees = ' + str(self.initial_heading_degrees))
 
         self.rate = 1.0
         
@@ -81,7 +84,7 @@ class Node:
 
         (r, p, y) = tf.transformations.euler_from_quaternion([msg.pose.pose.orientation.x, msg.pose.pose.orientation.y, msg.pose.pose.orientation.z, msg.pose.pose.orientation.w])
 
-        self.heading = (((2.0 * pi - y) * 180 / pi) + 50) % 360 
+        self.heading = (((2.0 * pi - y) * 180 / pi) + self.initial_heading_degrees) % 360
 
 
     def gps_navsat_callback(self, msg):
